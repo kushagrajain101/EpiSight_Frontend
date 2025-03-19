@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+
 const SignUp = () => {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState("");
   const [passwordScore, setPasswordScore] = useState(0);
   const [serverResponse, setServerResponse] = useState({ message: "", isError: false });
+  
+  const signupUrl = `${process.env.REACT_APP_API}/signup`;
+  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +70,7 @@ const SignUp = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await axios.post("http://localhost:3001/api/signup", formData);
+      const response = await axios.post(signupUrl, formData);
       setServerResponse({ message: response.data.message, isError: false });
       setFormData({ username: "", email: "", password: "" });
       setPasswordStrength("");

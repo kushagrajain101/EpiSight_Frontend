@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+
 const LogIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "", rememberMe: false });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  
+  const loginUrl = `${process.env.REACT_APP_API}/login`;
 
+  const model_api = process.env.MODEL_API;
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -23,7 +27,7 @@ const LogIn = () => {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:3001/api/login", {
+      const response = await fetch(loginUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -44,7 +48,7 @@ const LogIn = () => {
 
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-        window.location.href = data.redirectUrl || "http://127.0.0.1:5000";
+        window.location.href = data.redirectUrl || model_api;
       }, 1500);
     } catch (error) {
       setError(error.message);
