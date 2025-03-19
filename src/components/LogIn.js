@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-
 const LogIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "", rememberMe: false });
   const [isLoading, setIsLoading] = useState(false);
@@ -10,8 +9,10 @@ const LogIn = () => {
   const navigate = useNavigate();
   
   const loginUrl = `${process.env.REACT_APP_API}/login`;
+  const model_api = process.env.REACT_APP_MODEL_API;
 
-  const model_api = process.env.MODEL_API;
+  console.log("Model API URL:", model_api); // Debugging log
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -34,6 +35,7 @@ const LogIn = () => {
       });
 
       const data = await response.json();
+      console.log("API Response:", data); // Debugging log
 
       if (!response.ok) throw new Error(data.message || "Login failed");
 
@@ -47,8 +49,9 @@ const LogIn = () => {
       }
 
       setSuccess("Login successful! Redirecting...");
+      console.log("Redirecting to:", model_api); // Debugging log
       setTimeout(() => {
-        window.location.href = data.redirectUrl || model_api;
+        window.location.href = model_api; // Use MODEL_API
       }, 1500);
     } catch (error) {
       setError(error.message);
